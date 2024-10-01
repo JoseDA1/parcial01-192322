@@ -2,44 +2,54 @@ import java.util.Scanner;
 
 public class CompresionTexto {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese el texto a comprimir:");
-        String texto = sc.nextLine();
+        String texto = scanner.nextLine();
 
-        StringBuilder compr = new StringBuilder();
-        int c = 1;
-        for (int i = 1; i <= texto.length(); i++) {
-            if (i < texto.length() && texto.charAt(i) == texto.charAt(i - 1)) {
-                c++;
+        StringBuilder comprimido = new StringBuilder();
+
+        int contador = 1;
+        int uno = 1;
+        //Buena practica
+        int anchuraTexto = texto.length();
+        
+        //Recorre el ancho de texto
+        for (int i = 1; i <= anchuraTexto; i++) {
+            if (i < anchuraTexto && texto.charAt(i) == texto.charAt(i - uno)) {
+                contador++;
             } else {
-                compr.append(texto.charAt(i - 1));
-                if (c > 1) {
-                    compr.append(c);
+                comprimido.append(texto.charAt(i - uno));
+
+                if (contador > uno) {
+                    comprimido.append(contador);
                 }
-                c = 1;
+                contador = uno;
             }
         }
 
-        System.out.println("Texto comprimido: " + compr.toString());
+        System.out.println("Texto comprimido: " + comprimido.toString());
 
         // Descompresión
-        StringBuilder decompr = new StringBuilder();
-        for (int i = 0; i < compr.length(); i++) {
-            char ch = compr.charAt(i);
-            if (Character.isLetter(ch)) {
-                decompr.append(ch);
-                if (i + 1 < compr.length() && Character.isDigit(compr.charAt(i + 1))) {
-                    int num = Character.getNumericValue(compr.charAt(i + 1));
-                    for (int j = 1; j < num; j++) {
-                        decompr.append(c);
+        StringBuilder descomprimir = new StringBuilder();
+        int anchuraComprimido = comprimido.length();
+
+        for (int i = 0; i < anchuraComprimido; i++) {
+            char comprimidoChar = comprimido.charAt(i);
+            if (Character.isLetter(comprimidoChar)) {
+                descomprimir.append(comprimidoChar);
+                
+                if (i + uno < anchuraComprimido && Character.isDigit(comprimido.charAt(i + uno))) {
+                    int num = Character.getNumericValue(comprimido.charAt(i + uno));
+                    for (int j = uno; j < num; j++) {
+                        descomprimir.append(contador);
                     }
                     i++;
                 }
             }
         }
 
-        System.out.println("Texto descomprimido: " + decompr.toString());
+        System.out.println("Texto descomprimido: " + descomprimir.toString());
 
-        sc.close();
+        scanner.close();
     }
 }
